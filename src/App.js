@@ -1,21 +1,24 @@
-
-import mapboxgl from 'mapbox-gl/dist/mapbox-gl.js';
+import './App.css';
+import { actionReady, actionMoved } from './state/geo/actions';
 import { Component, createRef } from 'react';
 import { connect } from 'react-redux';
-import './App.css';
 import { MAP_STYLE, MAP_TOKEN } from './constants';
-
+import mapboxgl from 'mapbox-gl/dist/mapbox-gl.js';
 
 const mapStateToProps = (state) => {
   return {
     lng: state.geo.lng,
     lat: state.geo.lat,
     zoom: state.geo.zoom,
+    isLoading: state.geo.isLoading,
   }
 };
 
 const mapDispatchToProps = (dispatch) => {
-  return {}
+  return {
+    mapReady: () => { dispatch(actionReady()) },
+    mapMoved: (data) => { dispatch(actionMoved(data)) }
+  }
 };
 
 class App extends Component {
@@ -25,17 +28,33 @@ class App extends Component {
   }
 
   componentDidMount() {
-    this.createMap(MAP_TOKEN, this.mapContainer.current, MAP_STYLE, this.props);
+    this.map = this.createMap(MAP_TOKEN, this.mapContainer.current, MAP_STYLE, this.props);
+
+    this.map.on('load', () => {
+      // ready action dispatched to update the DOM
+      this.props.mapReady();
+    });
+
+    this.map.on('move', () => {
+      // moved action dispatched to update the coordinates and zoom level
+      const center = this.map.getCenter();
+      const zoom = this.map.getZoom();
+      this.props.mapMoved({
+        lat: center.lat.toFixed(4),
+        lng: center.lng.toFixed(4),
+        zoom: zoom.toFixed(2),
+      });
+    });
   }
 
   createMap(token, container, style, props) {
     if (this.map) {
-      return;
+      return this.map;
     }
     
     const { lng, lat, zoom } = props;
     mapboxgl.accessToken = token;
-    this.map = new mapboxgl.Map({
+    return new mapboxgl.Map({
       container,
       style,
       center: [lng, lat],
@@ -44,14 +63,17 @@ class App extends Component {
   }
 
   render() {
+    const { isLoading, lat, lng, zoom } = this.props;
+
     return (
       <div>
-        <div ref={this.mapContainer} className="map"></div>
-        <p className="description">Map for checkpoints and other features coming soon!</p>
+        <div className="sidebar">Latitude {lat} | Longitude {lng} | Zoom {zoom}</div>
+        <div ref={this.mapContainer} className="map" />
+        <p className={isLoading ? 'loading' : 'hidden'}>Loading...</p>
       </div>
     );
   }
 }
 
 // Redux connected App
-export default connect(mapStateToProps)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(App);
