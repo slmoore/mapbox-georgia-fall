@@ -28,3 +28,6 @@
     border-radius: 4px;
 }
 
+.map__popup__content {
+    font-family: 'Times New Roman', Times, serif;
+}

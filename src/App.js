@@ -1,9 +1,14 @@
 import './App.css';
-import { actionReady, actionMoved } from './state/geo/actions';
+import { actionReady, actionMoved } from './geo/state/actions';
 import { Component, createRef } from 'react';
 import { connect } from 'react-redux';
-import { MAP_STYLE, MAP_TOKEN } from './constants';
+import { MAP_LAYER_ID, MAP_STYLE, MAP_TOKEN } from './constants';
 import mapboxgl from 'mapbox-gl/dist/mapbox-gl.js';
+import ReactDOMServer from 'react-dom/server';
+import MarkerPopup from './geo/components/MarkerPopup';
+
+
+// ! move to a Map component, App then simply renders Map and anything else that is a component
 
 const mapStateToProps = (state) => {
   return {
@@ -45,13 +50,31 @@ class App extends Component {
         zoom: zoom.toFixed(2),
       });
     });
+
+    this.map.on('click', MAP_LAYER_ID, (event) => {
+      if (!(event.features && event.features.length)) {
+        return;
+      }
+      const feature = event.features[0];
+      const { title, description } = feature.properties;
+      const { coordinates } = feature.geometry;
+
+      new mapboxgl.Popup({ 
+        anchor: 'right',
+        offset: [-15, 0],
+        className: 'map__popup',
+      })
+        .setLngLat(coordinates)
+        .setHTML(ReactDOMServer.renderToString(<MarkerPopup title={title} description={description} />))
+        .addTo(this.map);
+    });
   }
 
   createMap(token, container, style, props) {
     if (this.map) {
       return this.map;
     }
-    
+
     const { lng, lat, zoom } = props;
     mapboxgl.accessToken = token;
     return new mapboxgl.Map({

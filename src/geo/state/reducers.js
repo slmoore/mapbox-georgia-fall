@@ -1,9 +1,10 @@
+import { GEORGIA_LAT_LNG, MAP_ZOOM } from "../../constants";
 import { MOVED, READY } from "./actions";
 
 const defaultState = {
-    lat: 33.753746,
-    lng: -84.386330,
-    zoom: 9,
+    lat: GEORGIA_LAT_LNG[0],
+    lng: GEORGIA_LAT_LNG[1],
+    zoom: MAP_ZOOM,
     isLoading: true,
 };
 

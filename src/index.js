@@ -1,7 +1,7 @@
 import './index.css';
 import { applyMiddleware, combineReducers, createStore } from 'redux';
 import App from './App';
-import geoReducer from './state/geo/reducers';
+import geoReducer from './geo/state/reducers';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux'
