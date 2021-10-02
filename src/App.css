@@ -29,5 +29,11 @@
 }
 
 .map__popup__content {
-    font-family: 'Times New Roman', Times, serif;
+    text-align: center;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+}
+
+.map__popup__image {
+    display: block;
+    height: 200px;
 }
