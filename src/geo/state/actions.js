@@ -6,10 +6,18 @@ export const actionReady = () => {
     }
 };
 
-export const MOVED = 'MOVED';
-export const actionMoved = (data) => {
+export const MONTH_CHANGED = 'MONTH_CHANGED';
+export const actionMonthChanged = (data) => {
     return {
-        type: MOVED,
-        payload: data,
+        type: MONTH_CHANGED,
+        payload: data
+    }
+}
+
+export const POINT_SELECTED = 'POINT_SELECTED';
+export const actionPointSelected = (data) => {
+    return {
+        type: POINT_SELECTED,
+        payload: data
     }
 };

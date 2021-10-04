@@ -1,6 +1,11 @@
+.app {
+    display: flex;
+}
+
 .map {
     height: 100vh;
-    width: 100vw;
+    width: 75vw;
+    position: relative;
 }
 
 .loading {
@@ -15,25 +20,50 @@
     display: none;
 }
 
-.sidebar {
-    background-color: rgba(35, 55, 75, 0.9);
-    color: #fff;
-    padding: 6px 12px;
-    font-family: monospace;
-    z-index: 1;
-    position: absolute;
-    top: 0;
-    left: 0;
-    margin: 12px;
+.month-filter {
+    background-color: rgba(171, 64, 10, 0.9);
     border-radius: 4px;
+    color: #fff;
+    margin: 12px;
+    padding: 6px 12px;
+    position: absolute;
+    right: 0;
+    top: 0;
+    z-index: 1;
+}
+
+.month-filter__label {
+    margin-right: 1rem;
+}
+
+.month-filter__label input {
+    vertical-align: text-bottom;
 }
 
 .map__popup__content {
+    margin: 0;
     text-align: center;
-    font-family: Georgia, 'Times New Roman', Times, serif;
 }
 
-.map__popup__image {
-    display: block;
-    height: 200px;
+.sidebar {
+    width: 25vw;
+    height: 100vh;
+    overflow: scroll;
+    scroll-behavior: smooth;
+}
+
+.sidebar__list {
+    list-style-type: none;
+    margin: 0;
+    padding: 10px;
+}
+
+.sidebar__list li {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.sidebar__list img {
+    width: 95%;
 }

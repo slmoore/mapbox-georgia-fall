@@ -1,13 +1,15 @@
 import './App.css';
-import { actionReady, actionMoved } from './geo/state/actions';
+import { actionReady, actionMonthChanged, actionPointSelected } from './geo/state/actions';
 import { Component, createRef } from 'react';
 import { connect } from 'react-redux';
-import { MAP_LAYER_ID, MAP_STYLE, MAP_TOKEN } from './constants';
-import mapboxgl from 'mapbox-gl/dist/mapbox-gl.js';
-import ReactDOMServer from 'react-dom/server';
-import MarkerPopup from './geo/components/MarkerPopup';
-import georgiaFallData, { GEORGIA_FALL_ID } from './geo/data/georgia-fall';
+import { FALL_MARKER_ID, MAP_STYLE, MAP_TOKEN, OCTOBER } from './constants';
+import dataset, { GEORGIA_NOVEMBER, GEORGIA_OCTOBER, peakNovember, peakOctober } from './geo/data/georgia-fall';
 import fallLeaf from './geo/assets/fall-leaf-icon.svg';
+import mapboxgl from 'mapbox-gl/dist/mapbox-gl.js';
+import MarkerPopup from './geo/components/MarkerPopup';
+import MonthFilter from './geo/components/MonthFilter';
+import ReactDOMServer from 'react-dom/server';
+import Sidebar from './geo/components/Sidebar';
 
 /**
  * 
@@ -30,6 +32,7 @@ import fallLeaf from './geo/assets/fall-leaf-icon.svg';
 
 
 // ! move to a Map component, App then simply renders Map and anything else that is a component
+// ! add proptypes
 
 const mapStateToProps = (state) => {
   return {
@@ -37,13 +40,16 @@ const mapStateToProps = (state) => {
     lat: state.geo.lat,
     zoom: state.geo.zoom,
     isLoading: state.geo.isLoading,
+    month: state.geo.month,
+    selected: state.geo.selected
   }
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
     mapReady: () => { dispatch(actionReady()) },
-    mapMoved: (data) => { dispatch(actionMoved(data)) }
+    monthChanged: (data) => { dispatch(actionMonthChanged(data)) },
+    pointSelected: (data) => { dispatch(actionPointSelected(data)) }
   }
 };
 
@@ -51,6 +57,8 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.mapContainer = createRef();
+    this.handleMonthChange = this.handleMonthChange.bind(this);
+    this.handleMapClick = this.handleMapClick.bind(this);
   }
 
   componentDidMount() {
@@ -59,82 +67,74 @@ class App extends Component {
     // ! change map.on() calls to await map.once('event');
 
     // ! everything should wait for 'load' anyways meaning move and click are either nested in a callback or await the promise
-    const { map, svgToImage } = this;
+    const { map, props, svgToImage, handleMapClick } = this;
 
     map.on('load', () => {
 
-      svgToImage(fallLeaf, 50, 50).then(fallMarker => {
-          // add image
-          const markerName = 'fall-marker';
-          map.addImage(markerName, fallMarker);
-  
-          // add dataset
-          map.addSource(GEORGIA_FALL_ID, {
+      svgToImage(fallLeaf, 20, 20).then(fallMarker => {
+        // add image
+        const markerName = FALL_MARKER_ID;
+        map.addImage(markerName, fallMarker);
+
+        dataset.forEach((item) => {
+          // add datasets and layers
+          map.addSource(item.id, {
             type: 'geojson',
-            data: georgiaFallData
+            data: item.data
           });
-  
+
           // add symbol layer
           map.addLayer({
-            id: GEORGIA_FALL_ID,
+            id: item.id,
             type: 'symbol',
-            source: GEORGIA_FALL_ID,
+            source: item.id,
             layout: {
               'icon-image': markerName,
-              'icon-allow-overlap': true
+              'icon-allow-overlap': true,
+              visibility: item.id === GEORGIA_OCTOBER ? 'visible' : 'none'
             }
           });
+        });
+
+        map.on('click', handleMapClick);
+
+        // ready action dispatched to update the DOM
+        props.mapReady();
       }).catch(err => {
         console.log(`error loading image: ${err}`);
-      })
-
-      // ready action dispatched to update the DOM
-      this.props.mapReady();
-    });
-
-    map.on('move', () => {
-      // moved action dispatched to update the coordinates and zoom level
-      const center = map.getCenter();
-      const zoom = map.getZoom();
-      this.props.mapMoved({
-        lat: center.lat.toFixed(4),
-        lng: center.lng.toFixed(4),
-        zoom: zoom.toFixed(2),
       });
-    });
-
-    map.on('click', MAP_LAYER_ID, (event) => {
-      if (!(event.features && event.features.length)) {
-        return;
-      }
-      const feature = event.features[0];
-      const { title, description, image } = feature.properties;
-      const { coordinates } = feature.geometry;
-
-      new mapboxgl.Popup({
-        anchor: 'right',
-        offset: [-15, 0],
-        className: 'map__popup',
-      })
-        .setLngLat(coordinates)
-        .setHTML(ReactDOMServer.renderToString(<MarkerPopup title={title} description={description} image={image} />))
-        .addTo(map);
     });
   }
 
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    if (!this.map) {
+      return;
+    }
+
+    const { month } = this.props;
+    if (month === OCTOBER) {
+      this.map.setLayoutProperty(GEORGIA_OCTOBER, 'visibility', 'visible');
+      this.map.setLayoutProperty(GEORGIA_NOVEMBER, 'visibility', 'none');
+      return;
+    }
+
+    this.map.setLayoutProperty(GEORGIA_OCTOBER, 'visibility', 'none');
+    this.map.setLayoutProperty(GEORGIA_NOVEMBER, 'visibility', 'visible');
+  }
+
   svgToImage(svgSrc, width, height) {
-      // create HTMLImageElement from svg
-      const img = new Image(width, height);
-      const promise = new Promise((resolve, reject) => {
-        img.addEventListener('load', (e) => {
-          resolve(img);
-        });
-        img.addEventListener('error', (e) => {
-          reject(e);
-        });
+    // create HTMLImageElement from svg
+    const img = new Image(width, height);
+    const promise = new Promise((resolve, reject) => {
+      img.addEventListener('load', () => {
+        resolve(img);
       });
-      img.src = svgSrc;
-      return promise;
+      img.addEventListener('error', (e) => {
+        reject(e);
+      });
+    });
+    img.src = svgSrc;
+    return promise;
   }
 
   createMap(token, container, style, props) {
@@ -152,14 +152,50 @@ class App extends Component {
     });
   }
 
+  handleMonthChange(event) {
+    if (this.props.month === event.target.value) {
+      return;
+    }
+
+    this.props.monthChanged(event.target.value);
+  }
+
+  handleMapClick(event) {
+    const features = this.map.queryRenderedFeatures(event.point);
+    if (!(features && features.length)) {
+      return;
+    }
+
+    const feature = features[0];
+    const { id, title } = feature.properties;
+    const { coordinates } = feature.geometry;
+    if (!(typeof id === 'number' && title && coordinates.length === 2)) {
+      return;
+    }
+
+    new mapboxgl.Popup({
+      anchor: 'bottom',
+      offset: [0, -15],
+      className: 'map__popup',
+    })
+      .setLngLat(coordinates)
+      .setHTML(ReactDOMServer.renderToString(<MarkerPopup title={title} />))
+      .addTo(this.map);
+
+    // scrolling to selected point - important that this is the last operation to the handler
+    this.props.pointSelected(id);
+  }
+
   render() {
-    const { isLoading, lat, lng, zoom } = this.props;
+    const { isLoading, month, selected } = this.props;
 
     return (
-      <div>
-        <div className="sidebar">Latitude {lat} | Longitude {lng} | Zoom {zoom}</div>
-        <div ref={this.mapContainer} className="map" />
-        <p className={isLoading ? 'loading' : 'hidden'}>Loading...</p>
+      <div className="app">
+        <Sidebar dataset={month === OCTOBER ? peakOctober : peakNovember} selected={selected} />
+        <section ref={this.mapContainer} className="map">
+          <p className={isLoading ? 'loading' : 'hidden'}>Loading...</p>
+          <MonthFilter activeMonth={month} handleMonthChange={this.handleMonthChange} />
+        </section>
       </div>
     );
   }
