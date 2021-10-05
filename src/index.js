@@ -7,12 +7,14 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux'
 import reportWebVitals from './reportWebVitals';
 import thunk from 'redux-thunk';
+import appReducer from './state/reducers';
 
 /**
  * App to map local adventures
  */
 
 const store = createStore(combineReducers({
+  app: appReducer,
   geo: geoReducer
 }), applyMiddleware(thunk));
 

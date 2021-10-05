@@ -1,3 +1,5 @@
+import PropTypes from 'prop-types';
+import { OCTOBER } from '../../constants';
 
 const MonthFilter = (props) => {
     const { activeMonth, handleMonthChange } = props;
@@ -12,5 +14,14 @@ const MonthFilter = (props) => {
         </form>
     );
 };
+
+MonthFilter.propTypes = {
+    activeMonth: PropTypes.string.isRequired,
+    handleMonthChange: PropTypes.func.isRequired
+}
+
+MonthFilter.defaultProps = {
+    activeMonth: OCTOBER
+}
 
 export default MonthFilter;
