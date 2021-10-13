@@ -1,4 +1,4 @@
-import { actionReady } from '../state/actions';
+import { actionReady, actionNotSupported } from '../state/actions';
 import { Component, createRef } from 'react';
 import { connect } from 'react-redux';
 import { FALL_MARKER_ID, MAP_STYLE, MAP_TOKEN, NOVEMBER, OCTOBER } from '../../constants';
@@ -18,13 +18,15 @@ const mapStateToProps = (state) => {
         isLoading: state.geo.isLoading,
         month: state.app.month,
         selected: state.app.selected,
-        dataset: state.app.dataset
+        dataset: state.app.dataset,
+        isSupported: state.geo.isSupported
     }
 };
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        mapReady: () => { dispatch(actionReady()) }
+        mapReady: () => { dispatch(actionReady()) },
+        notSupported: () => { dispatch(actionNotSupported()) }
     }
 };
 
@@ -41,6 +43,12 @@ class Map extends Component {
     }
 
     componentDidMount() {
+        if (!mapboxgl.supported()) {
+            this.props.notSupported();
+            return;
+        }
+
+
         this.map = this.createMap(MAP_TOKEN, this.mapContainer.current, MAP_STYLE, this.props);
         this.mapBootstrap();
     }
@@ -56,7 +64,7 @@ class Map extends Component {
 
             // add image
             const markerName = FALL_MARKER_ID;
-            map.addImage(markerName, fallMarker);
+            map.addImage(markerName, fallMarker, {sdf: true});
 
             for (let key in dataset) {
                 // add datasets and layers
@@ -218,10 +226,11 @@ class Map extends Component {
     }
 
     render() {
-        const { handleMonthChange, isLoading, month } = this.props;
+        const { handleMonthChange, isLoading, month, isSupported } = this.props;
 
         return (
             <section ref={this.mapContainer} className="map">
+                <div className={isSupported ? 'hidden' : 'not-supported'}>This browser is not supported.</div>
                 <Loading isLoading={isLoading} />
                 <MonthFilter activeMonth={month} handleMonthChange={handleMonthChange} />
             </section>
@@ -238,6 +247,7 @@ Map.propTypes = {
     selected: PropTypes.number.isRequired,
     dataset: PropTypes.object.isRequired,
     mapReady: PropTypes.func.isRequired,
+    isSupported: PropTypes.bool.isRequired
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Map);

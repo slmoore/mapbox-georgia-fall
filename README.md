@@ -15,12 +15,17 @@ Displays an interactive map of the best locations in Georgia to see fall colors.
 - Toggle between the months October and November to find the best destinations at that time.
 - Select a fall map icon (leaf) and a popup will identify the location.  It will also scroll the sidebar to the full description including an image of the fall colors.
 - Select a location on the sidebar to open a popup on the map showing where the sidebar destination is located.
+- Detects mapbox compatible browsers.
 
 ### Using
 
 - MapboxGL
 - React (class based)
 - Redux
+
+### Testing
+
+- tested manually on Chrome, will extend to unit/integration testing and other browsers in time.
 
 ### Launch locally
 
