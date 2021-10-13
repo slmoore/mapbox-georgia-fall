@@ -64,7 +64,7 @@ class Map extends Component {
 
             // add image
             const markerName = FALL_MARKER_ID;
-            map.addImage(markerName, fallMarker, {sdf: true});
+            map.addImage(markerName, fallMarker);
 
             for (let key in dataset) {
                 // add datasets and layers
