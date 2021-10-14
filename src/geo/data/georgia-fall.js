@@ -4,14 +4,14 @@ const peakOctober = {
             "type": "Feature",
             "properties": {
                 "id": 0,
-                "title": "Red Top Mountain State Park",
-                "description": "While best known for the 12,000 acre lake, Red Top Mountain is also a hiker’s haven. More than 15 miles of trails wind through the forested park, providing opportunities for exercise and nature photography.",
-                "address": "Red Top Mountain State Park, 50 Lodge Rd SE, Acworth, Georgia 30121, United States",
-                "image": "https://tinyurl.com/4639479e",
+                "title": "Piedmont Park",
+                "description": "Urban park in Atlanta, Georgia, located about 1 mile northeast of Downtown, between the Midtown and Virginia Highland neighborhoods.  In 1909, the sons of Frederick Law Olmsted, landscape architect for Central Park in New York, Carey and Frederick Jr. were asked to design the park's master plan while they were at work on Grant Park.",
+                "address": "Piedmont Park, 400 Park Dr NE, Atlanta, Georgia 30309, United States",
+                "image": "https://tinyurl.com/s2v8a6yz",
                 "month": "october"
             },
             "geometry": {
-                "coordinates": [-84.706985, 34.148023],
+                "coordinates": [-84.373141, 33.782808],
                 "type": "Point"
             }
         },
@@ -184,14 +184,14 @@ const peakOctober = {
             "type": "Feature",
             "properties": {
                 "id": 12,
-                "title": "Piedmont Park",
-                "description": "Urban park in Atlanta, Georgia, located about 1 mile northeast of Downtown, between the Midtown and Virginia Highland neighborhoods.  In 1909, the sons of Frederick Law Olmsted, landscape architect for Central Park in New York, Carey and Frederick Jr. were asked to design the park's master plan while they were at work on Grant Park.",
-                "address": "Piedmont Park, 400 Park Dr NE, Atlanta, Georgia 30309, United States",
-                "image": "https://tinyurl.com/s2v8a6yz",
+                "title": "Red Top Mountain State Park",
+                "description": "While best known for the 12,000 acre lake, Red Top Mountain is also a hiker’s haven. More than 15 miles of trails wind through the forested park, providing opportunities for exercise and nature photography.",
+                "address": "Red Top Mountain State Park, 50 Lodge Rd SE, Acworth, Georgia 30121, United States",
+                "image": "https://tinyurl.com/4639479e",
                 "month": "october"
             },
             "geometry": {
-                "coordinates": [-84.373141, 33.782808],
+                "coordinates": [-84.706985, 34.148023],
                 "type": "Point"
             }
         },

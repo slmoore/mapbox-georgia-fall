@@ -1,10 +1,11 @@
-import { actionReady, actionNotSupported } from '../state/actions';
+import { actionReady, actionNotSupported, actionError } from '../state/actions';
 import { Component, createRef } from 'react';
 import { connect } from 'react-redux';
 import { FALL_MARKER_ID, MAP_STYLE, MAP_TOKEN, NOVEMBER, OCTOBER } from '../../constants';
 import { renderToString } from 'react-dom/server';
 import fallLeaf from '../assets/fall-leaf-icon.svg';
-import mapboxgl from 'mapbox-gl';
+// eslint-disable-next-line import/no-webpack-loader-syntax
+import mapboxgl from '!mapbox-gl'; // webworker source is incompatible with react-scripts transpilation. loader disabled
 import MarkerPopup from './MarkerPopup';
 import MonthFilter from './MonthFilter';
 import Loading from './Loading';
@@ -19,14 +20,16 @@ const mapStateToProps = (state) => {
         month: state.app.month,
         selected: state.app.selected,
         dataset: state.app.dataset,
-        isSupported: state.geo.isSupported
+        isSupported: state.geo.isSupported,
+        isError: state.geo.isError
     }
 };
 
 const mapDispatchToProps = (dispatch) => {
     return {
         mapReady: () => { dispatch(actionReady()) },
-        notSupported: () => { dispatch(actionNotSupported()) }
+        notSupported: () => { dispatch(actionNotSupported()) },
+        errorFound: () => { dispatch(actionError()) }
     }
 };
 
@@ -42,15 +45,30 @@ class Map extends Component {
         this.handleMapMonth = this.handleMapMonth.bind(this);
     }
 
-    componentDidMount() {
+    async componentDidMount() {
         if (!mapboxgl.supported()) {
             this.props.notSupported();
             return;
         }
 
-
-        this.map = this.createMap(MAP_TOKEN, this.mapContainer.current, MAP_STYLE, this.props);
+        const data = await this.fetchMapbox();
+        if (!data) {
+            this.props.errorFound();
+            return;
+        }
+        
+        this.map = this.createMap(data.tkn, this.mapContainer.current, data.style, this.props);
         this.mapBootstrap();
+    }
+
+    async fetchMapbox() {
+        return fetch('/mbgf')
+            .then(res => {                
+                return res.json();
+            }).catch(err => {
+                console.log(err);
+                return null
+            });
     }
 
     async mapBootstrap() {
@@ -226,11 +244,12 @@ class Map extends Component {
     }
 
     render() {
-        const { handleMonthChange, isLoading, month, isSupported } = this.props;
+        const { handleMonthChange, isLoading, month, isSupported, isError } = this.props;
 
         return (
             <section ref={this.mapContainer} className="map">
-                <div className={isSupported ? 'hidden' : 'not-supported'}>This browser is not supported.</div>
+                <div className={isSupported ? 'hidden' : 'error'}>This browser is not supported.</div>
+                <div className={isError ? 'error' : 'hidden'}>An error occurred, please try again later.</div>
                 <Loading isLoading={isLoading} />
                 <MonthFilter activeMonth={month} handleMonthChange={handleMonthChange} />
             </section>
@@ -247,7 +266,8 @@ Map.propTypes = {
     selected: PropTypes.number.isRequired,
     dataset: PropTypes.object.isRequired,
     mapReady: PropTypes.func.isRequired,
-    isSupported: PropTypes.bool.isRequired
+    isSupported: PropTypes.bool.isRequired,
+    isError: PropTypes.bool.isRequired
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Map);

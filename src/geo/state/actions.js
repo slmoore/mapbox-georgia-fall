@@ -11,3 +11,10 @@ export const actionNotSupported = () => {
         type: NOT_SUPPORTED,
     }
 }
+
+export const ERROR = 'ERROR';
+export const actionError = () => {
+    return {
+        type: ERROR,
+    }
+}

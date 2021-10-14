@@ -8,7 +8,7 @@
     position: relative;
 }
 
-.not-supported {
+.error {
     height: 100%;
     line-height: 100vh;
     width: 100%;
