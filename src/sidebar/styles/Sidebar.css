@@ -17,16 +17,32 @@
 .sidebar__item {
     height: 100vh;
     min-height: 600px;
+    background-image: linear-gradient(315deg, #ff4e00 0%, #ec9f05 74%);
+}
+
+.sidebar__item__block {
+    margin: 0;
+    padding: 0;
+    background: rgba(255, 255, 255, 1);
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: space-evenly;
-    padding: 0 10px;
+    height: 100%;
 }
 
-.sidebar__item:hover {
-    background-image: linear-gradient(315deg, #ff4e00 0%, #ec9f05 74%);
+.sidebar__item__block:hover {
     cursor: pointer;
+    animation: fadebg .3s forwards;
+}
+
+@keyframes fadebg {
+    0% {
+        background: rgba(255, 255, 255, 1);
+    }
+    100% {
+        background: rgba(255, 255, 255, 0);
+    }
 }
 
 .sidebar__item__image {
@@ -35,4 +51,10 @@
 
 .sidebar__item__address {
     font-size: .7rem;
+}
+
+.sidebar__item__title,
+.sidebar__item__description,
+.sidebar__item__address {
+    padding: 0 10px;
 }

@@ -36,10 +36,12 @@ class SidebarItem extends Component {
 
         return (
             <li className="sidebar__item" ref={this.itemRef}>
-                <h3 className="sidebar__item__title">{title}</h3>
-                <img className="sidebar__item__image" src={image} alt={`fall colors of ${title}`} />
-                <p className="sidebar__item__description">{description}</p>
-                <p className="sidebar__item__address">{address}</p>
+                <div className="sidebar__item__block">
+                    <h3 className="sidebar__item__title">{title}</h3>
+                    <img className="sidebar__item__image" src={image} alt={`fall colors of ${title}`} />
+                    <p className="sidebar__item__description">{description}</p>
+                    <p className="sidebar__item__address">{address}</p>
+                </div>
             </li>
         );
     }

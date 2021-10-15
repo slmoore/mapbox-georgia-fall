@@ -1,12 +1,12 @@
 import { applyMiddleware, combineReducers, createStore } from 'redux';
-import App from './App';
+import { Provider } from 'react-redux'
+import App from './app/components/App';
+import appReducer from './app/state/reducers';
 import geoReducer from './geo/state/reducers';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Provider } from 'react-redux'
 import reportWebVitals from './reportWebVitals';
 import thunk from 'redux-thunk';
-import appReducer from './state/reducers';
 
 
 const store = createStore(combineReducers({

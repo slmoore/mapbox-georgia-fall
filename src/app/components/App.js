@@ -1,7 +1,7 @@
-import './App.css';
-import '../../geo/style/Geo.css';
-import '../../sidebar/style/Sidebar.css';
-import { actionMonthChanged, actionPointSelected } from './state/actions';
+import '../styles/App.css';
+import '../../geo/styles/Geo.css';
+import '../../sidebar/styles/Sidebar.css';
+import { actionMonthChanged, actionPointSelected } from '../state/actions';
 import { Component } from 'react';
 import { connect } from 'react-redux';
 import Map from '../../geo/components/Map';
