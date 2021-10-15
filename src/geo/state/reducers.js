@@ -1,5 +1,5 @@
-import { GEORGIA_LAT_LNG, MAP_ZOOM } from "../../constants";
-import { NOT_SUPPORTED, READY, ERROR } from "./actions";
+import { COMPLETE, FETCHING, GEORGIA_LAT_LNG, MAP_ZOOM } from "../../constants";
+import { NOT_SUPPORTED, READY, ERROR, FETCH_COMPLETE, FETCH_START } from "./actions";
 
 const defaultState = {
     lat: GEORGIA_LAT_LNG[0],
@@ -7,7 +7,9 @@ const defaultState = {
     zoom: MAP_ZOOM,
     isLoading: true,
     isSupported: true,
-    isError: false
+    isError: false,
+    fetchStatus: COMPLETE,
+    mapboxData: {}
 };
 
 const geoReducer = (state = defaultState, action) => {
@@ -23,6 +25,13 @@ const geoReducer = (state = defaultState, action) => {
         case ERROR:
             nextState.isLoading = false;
             nextState.isError = true;
+            return nextState;
+        case FETCH_START:
+            nextState.fetchStatus = FETCHING;
+            return nextState;
+        case FETCH_COMPLETE:
+            nextState.fetchStatus = COMPLETE;
+            nextState.mapboxData = action.payload;
             return nextState;
         default:
             return nextState;

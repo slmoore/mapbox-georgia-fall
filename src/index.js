@@ -1,4 +1,3 @@
-import './index.css';
 import { applyMiddleware, combineReducers, createStore } from 'redux';
 import App from './App';
 import geoReducer from './geo/state/reducers';
@@ -9,9 +8,6 @@ import reportWebVitals from './reportWebVitals';
 import thunk from 'redux-thunk';
 import appReducer from './state/reducers';
 
-/**
- * App to map local adventures
- */
 
 const store = createStore(combineReducers({
   app: appReducer,

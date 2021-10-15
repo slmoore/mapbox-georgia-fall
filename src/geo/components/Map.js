@@ -1,7 +1,7 @@
-import { actionReady, actionNotSupported, actionError } from '../state/actions';
+import { actionReady, actionNotSupported, actionError, thunkGetMapMeta } from '../state/actions';
 import { Component, createRef } from 'react';
 import { connect } from 'react-redux';
-import { FALL_MARKER_ID, MAP_STYLE, MAP_TOKEN, NOVEMBER, OCTOBER } from '../../constants';
+import { COMPLETE, FALL_MARKER_ID, NOVEMBER, OCTOBER } from '../../constants';
 import { renderToString } from 'react-dom/server';
 import fallLeaf from '../assets/fall-leaf-icon.svg';
 // eslint-disable-next-line import/no-webpack-loader-syntax
@@ -21,7 +21,9 @@ const mapStateToProps = (state) => {
         selected: state.app.selected,
         dataset: state.app.dataset,
         isSupported: state.geo.isSupported,
-        isError: state.geo.isError
+        isError: state.geo.isError,
+        fetchStatus: state.geo.fetchStatus,
+        mapboxData: state.geo.mapboxData
     }
 };
 
@@ -29,7 +31,8 @@ const mapDispatchToProps = (dispatch) => {
     return {
         mapReady: () => { dispatch(actionReady()) },
         notSupported: () => { dispatch(actionNotSupported()) },
-        errorFound: () => { dispatch(actionError()) }
+        errorFound: () => { dispatch(actionError()) },
+        getMapboxData: () => { dispatch(thunkGetMapMeta()) }
     }
 };
 
@@ -45,30 +48,44 @@ class Map extends Component {
         this.handleMapMonth = this.handleMapMonth.bind(this);
     }
 
-    async componentDidMount() {
+    componentDidMount() {
         if (!mapboxgl.supported()) {
             this.props.notSupported();
             return;
         }
+        
+        this.props.getMapboxData();
+    }
+    
+    componentDidUpdate(prevProps) {
+        const { month, selected, dataset, fetchStatus, mapboxData } = this.props;
 
-        const data = await this.fetchMapbox();
-        if (!data) {
-            this.props.errorFound();
+        // mapbox fetch status changed
+        if (fetchStatus !== prevProps.fetchStatus) {
+            if (fetchStatus === COMPLETE) {
+                this.map = this.createMap(mapboxData.tkn, this.mapContainer.current, mapboxData.style, this.props);
+                this.mapBootstrap();
+            }
+        }
+
+        if (!this.map) {
             return;
         }
-        
-        this.map = this.createMap(data.tkn, this.mapContainer.current, data.style, this.props);
-        this.mapBootstrap();
-    }
 
-    async fetchMapbox() {
-        return fetch('/mbgf')
-            .then(res => {                
-                return res.json();
-            }).catch(err => {
-                console.log(err);
-                return null
-            });
+        // month changed
+        if (month !== prevProps.month) {
+            if (month === OCTOBER) {
+                this.handleMapMonth(OCTOBER, NOVEMBER, 0);
+            } else {
+                this.handleMapMonth(NOVEMBER, OCTOBER, 14);
+            }
+        }
+
+        // selected item changed
+        if (selected !== prevProps.selected) {
+            const { coordinates, title } = this.getPopupData(dataset, month, selected);
+            this.showPopup(coordinates, title);
+        }
     }
 
     async mapBootstrap() {
@@ -120,28 +137,6 @@ class Map extends Component {
             mapReady();
         } catch (err) {
             console.log(`error bootstrapping map: ${err}`);
-        }
-    }
-
-    componentDidUpdate(prevProps) {
-        if (!this.map) {
-            return;
-        }
-        const { month, selected, dataset } = this.props;
-
-        // month changed
-        if (month !== prevProps.month) {
-            if (month === OCTOBER) {
-                this.handleMapMonth(OCTOBER, NOVEMBER, 0);
-            } else {
-                this.handleMapMonth(NOVEMBER, OCTOBER, 14);
-            }
-        }
-
-        // selected item changed
-        if (selected !== prevProps.selected) {
-            const { coordinates, title } = this.getPopupData(dataset, month, selected);
-            this.showPopup(coordinates, title);
         }
     }
 
@@ -267,7 +262,8 @@ Map.propTypes = {
     dataset: PropTypes.object.isRequired,
     mapReady: PropTypes.func.isRequired,
     isSupported: PropTypes.bool.isRequired,
-    isError: PropTypes.bool.isRequired
+    isError: PropTypes.bool.isRequired,
+    fetchStatus: PropTypes.string.isRequired
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Map);

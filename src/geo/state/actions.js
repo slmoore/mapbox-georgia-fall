@@ -18,3 +18,25 @@ export const actionError = () => {
         type: ERROR,
     }
 }
+
+export const FETCH_START = 'FETCH_START';
+export const actionFetchStart = () => {
+    return {
+        type: FETCH_START
+    }
+}
+
+export const FETCH_COMPLETE = 'FETCH_COMPLETE';
+export const thunkGetMapMeta = () => {
+    return async (dispatch, getState) => {
+        try {
+            dispatch(actionFetchStart());
+            const response = await fetch('/mbgf')
+            const data = await response.json();
+            dispatch({ type: FETCH_COMPLETE, payload: data});
+        } catch (error) {
+            console.log(error);
+            dispatch({ type: FETCH_COMPLETE, payload: null});            
+        }
+    }
+}
