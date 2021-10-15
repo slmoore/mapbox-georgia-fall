@@ -1,5 +1,5 @@
-import { OCTOBER } from "../constants";
-import dataset from "../geo/data/georgia-fall";
+import { OCTOBER } from "../../constants";
+import dataset from "../../geo/data/GeorgiaFallData";
 import { MONTH_CHANGED, POINT_SELECTED } from "./actions";
 
 const defaultState = {

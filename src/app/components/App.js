@@ -1,25 +1,27 @@
 import './App.css';
+import '../../geo/style/Geo.css';
+import '../../sidebar/style/Sidebar.css';
 import { actionMonthChanged, actionPointSelected } from './state/actions';
 import { Component } from 'react';
 import { connect } from 'react-redux';
-import Map from './geo/components/Map';
-import Sidebar from './sidebar/components/Sidebar';
+import Map from '../../geo/components/Map';
+import Sidebar from '../../sidebar/components/Sidebar';
 import PropTypes from 'prop-types';
 
 /**
  * 
  * -------------------------------------------
- * | image         |        | filter Oct Nov |
- * |               |        |----------------|
+ * | title         |        | filter Oct Nov |
+ * | image         |        |----------------|
  * | description   |                         |
- * | hours         |  Map with Icons         |
- * | fees          |  First is pre-selected  |
- * | driving time  |                         |
- * | from Atlanta  |                         |
+ * | address       |  Map with Icons         |
+ * |               |  First is pre-selected  |
  * |               |                         |
- * | Attribution   |                         |
- * | to georgia    |                         |
- * | source        |                         |
+ * |               |                         |
+ * |               |                         |
+ * |               |                         |
+ * |               |                         |
+ * |               |                         |
  * |------------------------------------------
  * 
  */
