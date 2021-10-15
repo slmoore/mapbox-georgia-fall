@@ -1,4 +1,4 @@
-import { COMPLETE, FETCHING, GEORGIA_LAT_LNG, MAP_ZOOM } from "../../constants";
+import { COMPLETE, STARTING, GEORGIA_LAT_LNG, MAP_ZOOM } from "../../constants";
 import { NOT_SUPPORTED, READY, ERROR, FETCH_COMPLETE, FETCH_START } from "./actions";
 
 const defaultState = {
@@ -27,7 +27,7 @@ const geoReducer = (state = defaultState, action) => {
             nextState.isError = true;
             return nextState;
         case FETCH_START:
-            nextState.fetchStatus = FETCHING;
+            nextState.fetchStatus = STARTING;
             return nextState;
         case FETCH_COMPLETE:
             nextState.fetchStatus = COMPLETE;

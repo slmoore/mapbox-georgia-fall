@@ -10,6 +10,7 @@ import MarkerPopup from './MarkerPopup';
 import MonthFilter from './MonthFilter';
 import Loading from './Loading';
 import PropTypes from 'prop-types';
+import FullscreenButton from './FullscreenButton';
 
 const mapStateToProps = (state) => {
     return {
@@ -239,14 +240,17 @@ class Map extends Component {
     }
 
     render() {
-        const { handleMonthChange, isLoading, month, isSupported, isError } = this.props;
+        const { handleMonthChange, isLoading, month, isSupported, isError, handleFullscreen } = this.props;
 
         return (
             <section ref={this.mapContainer} className="map">
                 <div className={isSupported ? 'hidden' : 'error'}>This browser is not supported.</div>
                 <div className={isError ? 'error' : 'hidden'}>An error occurred, please try again later.</div>
                 <Loading isLoading={isLoading} />
-                <MonthFilter activeMonth={month} handleMonthChange={handleMonthChange} />
+                <div className="mapTools">
+                    <MonthFilter activeMonth={month} handleMonthChange={handleMonthChange} />
+                    <FullscreenButton handleFullscreen={handleFullscreen} />
+                </div>
             </section>
         );
     }

@@ -53,16 +53,21 @@
     }
 }
 
+.mapTools {
+    z-index: 1;
+    position: absolute;
+    right: 0;
+    top: 0;
+    display: flex;
+    padding: 10px;
+}
+
 .month-filter {
     background-color: rgba(171, 64, 10, 0.9);
     border-radius: 4px;
     color: #fff;
-    margin: 12px;
+    margin-right: 12px;
     padding: 6px 12px;
-    position: absolute;
-    right: 0;
-    top: 0;
-    z-index: 1;
 }
 
 .month-filter__label {
@@ -71,6 +76,24 @@
 
 .month-filter__label input {
     vertical-align: text-bottom;
+}
+
+.month-filter__label input:hover {
+    cursor: pointer;
+}
+
+.fullscreen {
+    background: #fff;
+    height: 30px;
+    border: 1px solid rgb(67, 67, 67);
+}
+
+.fullscreen:hover {
+    cursor: pointer;
+}
+
+.fullscreen img {
+    height: 100%;
 }
 
 .map__popup__content {

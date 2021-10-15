@@ -13,3 +13,19 @@ export const actionPointSelected = (data) => {
         payload: data
     }
 };
+
+export const FULLSCREEN = 'FULLSCREEN';
+export const actionFullscreen = (status) => {
+    return {
+        type: FULLSCREEN,
+        payload: status
+    }
+}
+
+export const EXIT_FULLSCREEN = 'EXIT_FULLSCREEN';
+export const actionExitFullscreen = (status) => {
+    return {
+        type: EXIT_FULLSCREEN,
+        payload: status
+    }
+}

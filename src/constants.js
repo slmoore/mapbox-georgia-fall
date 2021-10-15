@@ -4,4 +4,5 @@ export const FALL_MARKER_ID = 'fall-marker';
 export const OCTOBER = 'october';
 export const NOVEMBER = 'november';
 export const COMPLETE = 'COMPLETE';
-export const FETCHING = 'FETCHING';
+export const STARTING = 'STARTING';
+export const FAILED = 'FAILED';

@@ -12,12 +12,6 @@ class SidebarItem extends Component {
         if (this.props.selected === this.props.featureId) {
             this.itemRef.current.scrollIntoView(true);
         }
-
-        this.itemRef.current.addEventListener('click', this.handleClick);
-    }
-
-    componentWillUnmount() {
-        this.itemRef.current.removeEventListener('click', this.handleClick);
     }
 
     componentDidUpdate() {
@@ -35,7 +29,7 @@ class SidebarItem extends Component {
         const {title, image, description, address} = this.props;
 
         return (
-            <li className="sidebar__item" ref={this.itemRef}>
+            <li className="sidebar__item" ref={this.itemRef} onClick={this.handleClick} >
                 <div className="sidebar__item__block">
                     <h3 className="sidebar__item__title">{title}</h3>
                     <img className="sidebar__item__image" src={image} alt={`fall colors of ${title}`} />
