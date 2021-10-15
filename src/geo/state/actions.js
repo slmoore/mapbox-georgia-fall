@@ -27,16 +27,23 @@ export const actionFetchStart = () => {
 }
 
 export const FETCH_COMPLETE = 'FETCH_COMPLETE';
+export const actionFetchComplete = (data) => {
+    return {
+        type: FETCH_COMPLETE,
+        payload: data
+    }
+}
+
 export const thunkGetMapMeta = () => {
     return async (dispatch, getState) => {
         try {
             dispatch(actionFetchStart());
             const response = await fetch('/mbgf')
             const data = await response.json();
-            dispatch({ type: FETCH_COMPLETE, payload: data});
+            dispatch(actionFetchComplete(data));
         } catch (error) {
             console.log(error);
-            dispatch({ type: FETCH_COMPLETE, payload: null});            
+            dispatch(actionFetchComplete(null));
         }
     }
 }

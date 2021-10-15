@@ -20,7 +20,7 @@ Displays an interactive map of the best locations in Georgia to see fall colors.
 ### Using
 
 - MapboxGL
-- React (class based)
+- React
 - Redux
 
 ### Testing
@@ -29,7 +29,10 @@ Displays an interactive map of the best locations in Georgia to see fall colors.
 
 ### Launch locally
 
-- Clone repo && `npm run start`
+- Clone repo.
+- Signup with Mapbox to get your public api key.
+- Create `.env` file in root directory with key/value pairs `PORT` (port number), `MBTKN` (your public api key), `MBSTL` (chosen mapbox style).
+- Then run `npm run build && npm run serve` and visit `http://localhost:PORT/` where port is your port number.
 
 ### Reference
 
@@ -37,7 +40,6 @@ Displays an interactive map of the best locations in Georgia to see fall colors.
 
 ### Next steps
 
-- unit testing and accessibility testing
-- deployment
-- restructure styles and code comments
 - expand features to include trails and fall color polygon overlays
+- unit testing and accessibility testing
+- code comments, styles with postcss

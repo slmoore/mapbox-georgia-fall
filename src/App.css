@@ -92,6 +92,7 @@
     overflow: scroll;
     scroll-behavior: smooth;
     min-width: 200px;
+    font-family: helvetica, arial, sans-serif;
 }
 
 .sidebar__list {
