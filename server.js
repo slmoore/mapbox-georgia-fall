@@ -8,7 +8,7 @@ app.use(express.static(path.join(__dirname, 'build')));
 
 app.get('/', function (req, res) {
   res.sendFile(path.join(__dirname, 'build', 'index.html'));
-});
+}); 
 
 app.get('/mbgf', function (req, res) {
   res.json({tkn: process.env.MBTKN, style: process.env.MBSTL});
