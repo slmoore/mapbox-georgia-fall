@@ -59,11 +59,17 @@ class Map extends Component {
     }
     
     componentDidUpdate(prevProps) {
-        const { month, selected, dataset, fetchStatus, mapboxData } = this.props;
-
+        const { month, selected, dataset, fetchStatus, errorFound } = this.props;
+        const mapboxData = this.props.mapboxData || {};
+        
         // mapbox fetch status changed
         if (fetchStatus !== prevProps.fetchStatus) {
             if (fetchStatus === COMPLETE) {
+                if (!(mapboxData.tkn && mapboxData.style)) {
+                    errorFound();
+                    return;
+                }
+
                 this.map = this.createMap(mapboxData.tkn, this.mapContainer.current, mapboxData.style, this.props);
                 this.mapBootstrap();
             }

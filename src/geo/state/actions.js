@@ -38,7 +38,7 @@ export const thunkGetMapMeta = () => {
     return async (dispatch, getState) => {
         try {
             dispatch(actionFetchStart());
-            const response = await fetch('/mbgf')
+            const response = await fetch('/mbgf');
             const data = await response.json();
             dispatch(actionFetchComplete(data));
         } catch (error) {
