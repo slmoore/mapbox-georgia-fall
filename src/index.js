@@ -7,7 +7,10 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import reportWebVitals from './reportWebVitals';
 import thunk from 'redux-thunk';
+import Amplify from 'aws-amplify';
+import awsExports from './aws-exports';
 
+Amplify.configure(awsExports);
 
 const store = createStore(combineReducers({
     app: appReducer,

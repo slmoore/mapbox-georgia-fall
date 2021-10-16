@@ -3,9 +3,11 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@aws-amplify/ui-react": "^1.2.20",
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^11.2.7",
     "@testing-library/user-event": "^12.8.3",
+    "aws-amplify": "^4.3.2",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
     "mapbox-gl": "^2.4.1",

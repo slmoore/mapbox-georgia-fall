@@ -1,0 +1,15 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-georgiafall-dev-193433-authRole",
+      "UnauthRoleArn": "arn:aws:iam::369104689815:role/amplify-georgiafall-dev-193433-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::369104689815:role/amplify-georgiafall-dev-193433-authRole",
+      "Region": "us-east-2",
+      "DeploymentBucketName": "amplify-georgiafall-dev-193433-deployment",
+      "UnauthRoleName": "amplify-georgiafall-dev-193433-unauthRole",
+      "StackName": "amplify-georgiafall-dev-193433",
+      "StackId": "arn:aws:cloudformation:us-east-2:369104689815:stack/amplify-georgiafall-dev-193433/a053cc30-2ed9-11ec-89c8-0ae5c0f80fca",
+      "AmplifyAppId": "d2esqyvghkr10u"
+    }
+  }
+}
