@@ -15,7 +15,7 @@
       "function": {
         "mbgf": {
           "deploymentBucketName": "amplify-georgiafall-dev-193433-deployment",
-          "s3Key": "amplify-builds/mbgf-64425064346363323365-build.zip",
+          "s3Key": "amplify-builds/mbgf-4544457a77694138472b-build.zip",
           "mbstl": "mapbox://styles/mapbox/outdoors-v11",
           "secretsPathAmplifyAppId": "d2esqyvghkr10u"
         }
