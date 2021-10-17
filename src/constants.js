@@ -6,5 +6,6 @@ export const NOVEMBER = 'november';
 export const COMPLETE = 'COMPLETE';
 export const STARTING = 'STARTING';
 export const FAILED = 'FAILED';
-export const URL_MBGF = '/mbgf';
-export const LOCAL = process.env.REACT_APP_LOCAL;
+export const MBGF = 'mbgf';
+export const APIFUNC = '/items';
+export const LOCAL = process.env.REACT_APP_LOCAL === 'true';

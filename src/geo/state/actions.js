@@ -1,5 +1,5 @@
 import { API } from 'aws-amplify';
-import { LOCAL, URL_MBGF } from '../../constants';
+import { LOCAL, MBGF, APIFUNC } from '../../constants';
 
 export const READY = 'READY';
 export const actionReady = () => {
@@ -41,11 +41,16 @@ export const thunkGetMapMeta = () => {
     return async (dispatch, getState) => {
         try {
             dispatch(actionFetchStart());
-            const response = LOCAL ? await fetch(URL_MBGF) : await API.get(URL_MBGF, '/items');
-            const data = await response.json();
-            dispatch(actionFetchComplete(data));
+            let data;
+            if (LOCAL) {
+                const response = await fetch(`/${MBGF}`);
+                data = await response.json();
+            } else {
+                data = await API.get(MBGF, APIFUNC);
+            }
+            dispatch(actionFetchComplete(Object.freeze(data)));
         } catch (error) {
-            console.log(error);
+            console.log(`LOCAL:${LOCAL} error:${error}`);
             dispatch(actionFetchComplete(null));
         }
     }

@@ -11,7 +11,7 @@ require('dotenv').config()
  * add LOCAL to environment variables
  */
 
-if (process.env.REACT_APP_LOCAL) {
+if (process.env.REACT_APP_LOCAL === 'true') {
 
   const LOCALPORT = process.env.LOCALPORT || 8080;
   app.use(express.static(path.join(__dirname, 'build')));
