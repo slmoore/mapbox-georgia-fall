@@ -1,3 +1,6 @@
+import { API } from 'aws-amplify';
+import { URL_MBGF } from '../../constants';
+
 export const READY = 'READY';
 export const actionReady = () => {
     return {
@@ -38,8 +41,11 @@ export const thunkGetMapMeta = () => {
     return async (dispatch, getState) => {
         try {
             dispatch(actionFetchStart());
-            const response = await fetch('/mbgf');
+            const response = await API.get(URL_MBGF, '/items');
             const data = await response.json();
+
+            console.log(`api data ${data}`);
+
             dispatch(actionFetchComplete(data));
         } catch (error) {
             console.log(error);

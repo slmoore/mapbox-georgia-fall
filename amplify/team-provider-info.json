@@ -10,6 +10,14 @@
       "StackName": "amplify-georgiafall-dev-193433",
       "StackId": "arn:aws:cloudformation:us-east-2:369104689815:stack/amplify-georgiafall-dev-193433/a053cc30-2ed9-11ec-89c8-0ae5c0f80fca",
       "AmplifyAppId": "d2esqyvghkr10u"
+    },
+    "categories": {
+      "function": {
+        "mbgf": {
+          "deploymentBucketName": "amplify-georgiafall-dev-193433-deployment",
+          "s3Key": "amplify-builds/mbgf-64425064346363323365-build.zip"
+        }
+      }
     }
   }
 }
