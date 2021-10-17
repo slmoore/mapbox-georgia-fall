@@ -1,3 +1,12 @@
 {
-  "lambdaLayers": []
+  "lambdaLayers": [],
+  "environmentVariableList": [
+    {
+      "cloudFormationParameterName": "mbstl",
+      "environmentVariableName": "MBSTL"
+    }
+  ],
+  "secretNames": [
+    "MBTKN"
+  ]
 }
