@@ -7,3 +7,4 @@ export const COMPLETE = 'COMPLETE';
 export const STARTING = 'STARTING';
 export const FAILED = 'FAILED';
 export const URL_MBGF = '/mbgf';
+export const LOCAL = process.env.REACT_APP_LOCAL;
