@@ -1,0 +1,35 @@
+{
+  "paths": [
+    {
+      "name": "/items",
+      "lambdaFunction": "mbgf",
+      "privacy": {
+        "open": true
+      },
+      "policyResourceName": "/items"
+    }
+  ],
+  "resourceName": "mbgf",
+  "apiName": "mbgf",
+  "functionArns": [
+    {
+      "lambdaFunction": "mbgf"
+    }
+  ],
+  "privacy": {
+    "auth": 0,
+    "unauth": 0,
+    "authRoleName": "amplify-georgiafall-dev-193433-authRole",
+    "unAuthRoleName": "amplify-georgiafall-dev-193433-unauthRole"
+  },
+  "dependsOn": [
+    {
+      "category": "function",
+      "resourceName": "mbgf",
+      "attributes": [
+        "Name",
+        "Arn"
+      ]
+    }
+  ]
+}
