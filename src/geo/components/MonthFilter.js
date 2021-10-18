@@ -1,6 +1,12 @@
 import PropTypes from 'prop-types';
 import { OCTOBER } from '../../constants';
 
+/**
+ * Month Filter component
+ * 
+ * @param {Object} props 
+ * @returns {JSX}
+ */
 const MonthFilter = (props) => {
     const { activeMonth, handleMonthChange } = props;
     return (

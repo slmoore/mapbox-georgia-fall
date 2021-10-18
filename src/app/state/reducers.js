@@ -11,6 +11,13 @@ const defaultState = {
     exitFullscreenStatus: COMPLETE
 };
 
+/**
+ * Redux Reducer for App state
+ * 
+ * @param {Object} state 
+ * @param {{type: string}} action 
+ * @returns {Object} nextState
+ */
 const appReducer = (state = defaultState, action) => {
     const nextState = {...state};
     switch(action.type) {

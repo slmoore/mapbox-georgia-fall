@@ -48,6 +48,9 @@ const mapDispatchToProps = (dispatch) => {
     }
 };
 
+/**
+ * App container component including Sidebar and Map
+ */
 class App extends Component {
     constructor(props) {
         super(props);
@@ -56,6 +59,11 @@ class App extends Component {
         this.handleFullscreen = this.handleFullscreen.bind(this);
     }
 
+    /**
+     * Handle DOM event for month change.
+     * 
+     * @param {Event} event 
+     */
     handleMonthChange(event) {
         if (this.props.month === event.target.value) {
             return;
@@ -64,6 +72,11 @@ class App extends Component {
         this.props.monthChanged(event.target.value);
     }
 
+    /**
+     * Handle DOM event for fullscreen mode.
+     * 
+     * @param {Event} event 
+     */
     async handleFullscreen(event) {
         event.preventDefault();
         const { isFullscreen, fullscreen, exitFullscreen } = this.props;
@@ -89,6 +102,11 @@ class App extends Component {
         }
     }
 
+    /**
+     * Render App component.
+     * 
+     * @returns {JSX}
+     */
     render() {
         const { appRef, handleFullscreen, handleMonthChange } = this;
         const { dataset, month, selected, pointSelected } = this.props;

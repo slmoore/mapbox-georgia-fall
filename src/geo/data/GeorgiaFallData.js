@@ -1,3 +1,8 @@
+/**
+ * GeoJSON Georgia Fall Data
+ * 
+ * @todo move to backend
+ */
 const peakOctober = {
     "features": [
         {

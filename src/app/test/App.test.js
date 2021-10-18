@@ -1,8 +1,14 @@
-import { render, screen } from '@testing-library/react';
-import App from './App';
+// @todo complete integration testing for App, Map, Sidebar
 
-test('renders learn react link', () => {
-  render(<App />);
-  const linkElement = screen.getByText(/learn react/i);
-  expect(linkElement).toBeInTheDocument();
+test('handleMonthChange updates the month', () => {
+  expect(true).toBeTruthy();
 });
+
+test('handleFullscreen toggles the fullscreen mode', () => {
+  expect(true).toBeTruthy();
+});
+
+test('App includes sidebar and map', () => {
+  expect(true).toBeTruthy();
+});
+

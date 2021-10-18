@@ -1,6 +1,12 @@
 import SidebarList from "./SidebarList";
 import PropTypes from 'prop-types';
 
+/**
+ * Sidebar component displaying destination details
+ * 
+ * @param {Object} props 
+ * @returns {JSX}
+ */
 const Sidebar = (props) => {
     return (
         <section className="sidebar">

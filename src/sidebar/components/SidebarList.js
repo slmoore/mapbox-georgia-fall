@@ -1,6 +1,12 @@
 import SidebarItem from "./SidebarItem";
 import PropTypes from 'prop-types';
 
+/**
+ * Sidebar List containing all destinations
+ * 
+ * @param {Object} props 
+ * @returns {JSX}
+ */
 const SidebarList = (props) => {
     const { dataset, month, selected, pointSelected } = props;
 

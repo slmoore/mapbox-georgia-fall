@@ -37,6 +37,9 @@ const mapDispatchToProps = (dispatch) => {
     }
 };
 
+/**
+ * Map component including Mapbox map instance and interactions.
+ */
 class Map extends Component {
     constructor(props) {
         super(props);
@@ -49,6 +52,11 @@ class Map extends Component {
         this.handleMapMonth = this.handleMapMonth.bind(this);
     }
 
+    /**
+     * Component mounted lifecycle method.
+     * 
+     * Dispatch fetch action.
+     */
     componentDidMount() {
         if (!mapboxgl.supported()) {
             this.props.notSupported();
@@ -58,6 +66,13 @@ class Map extends Component {
         this.props.getMapboxData();
     }
     
+    /**
+     * Component updated lifecycle method.
+     * 
+     * Update the component based on changes to data fetched, month changes, and markers selected.
+     * 
+     * @param {Object} prevProps 
+     */
     componentDidUpdate(prevProps) {
         const { month, selected, dataset, fetchStatus, errorFound } = this.props;
         const mapboxData = this.props.mapboxData || {};
@@ -95,6 +110,9 @@ class Map extends Component {
         }
     }
 
+    /**
+     * Bootstrap the Mapbox map and dispatch ready action.
+     */
     async mapBootstrap() {
         const { map, props, svgToImage, handleMapClick, addCursorListeners } = this;
         const { mapReady, selected, dataset, month } = props;
@@ -129,7 +147,7 @@ class Map extends Component {
             }
 
             map.on('click', handleMapClick);
-            addCursorListeners(OCTOBER);
+            addCursorListeners(props.month);
 
             // popup on first available feature
             const coordinates = dataset[month].features[selected].geometry.coordinates;
@@ -147,6 +165,14 @@ class Map extends Component {
         }
     }
 
+    /**
+     * Build popup data from dataset.
+     *  
+     * @param {Object} dataset 
+     * @param {string} month 
+     * @param {number} id 
+     * @returns {{ coordinates, title }}
+     */
     getPopupData(dataset, month, id) {
         return dataset[month].features.reduce((accumulator, item) => {
             if (item.properties.id === id) {
@@ -157,12 +183,29 @@ class Map extends Component {
         }, {});
     }
 
+    /**
+     * Handle changes to the month for the map.
+     * Layout changes, and listener updates.
+     * 
+     * @param {string} nextMonth 
+     * @param {string} prevMonth 
+     * @param {number} id 
+     */
     handleMapMonth(nextMonth, prevMonth, id) {
         this.map.setLayoutProperty(prevMonth, 'visibility', 'none');
         this.map.setLayoutProperty(nextMonth, 'visibility', 'visible');
         this.addCursorListeners(nextMonth, prevMonth);
     }
 
+    /**
+     * Convert SVG image to HTMLImageElement.
+     * Used by the Mapbox API for setting Markers.
+     * 
+     * @param {string} svgSrc 
+     * @param {number} width 
+     * @param {number} height 
+     * @returns {Promise<HTMLImageElement|Error>}
+     */
     svgToImage(svgSrc, width, height) {
         // create HTMLImageElement from svg
         const img = new Image(width, height);
@@ -178,6 +221,16 @@ class Map extends Component {
         return promise;
     }
 
+    /**
+     * Create Mapbox map instance.
+     * Instance will be reused for the lifecycle of the Map component.
+     * 
+     * @param {string} token 
+     * @param {Element} container 
+     * @param {string} style 
+     * @param {Object} props 
+     * @returns {MapboxMap}
+     */
     createMap(token, container, style, props) {
         if (this.map) {
             return this.map;
@@ -193,6 +246,12 @@ class Map extends Component {
         });
     }
 
+    /**
+     * Handle click DOM events on the Map component.
+     * Dispatch an action with the Feature id if the point selected includes Feature coordinates.
+     * 
+     * @param {Event} event 
+     */
     handleMapClick(event) {
         event.preventDefault();
 
@@ -210,6 +269,13 @@ class Map extends Component {
         this.props.pointSelected(id);
     }
 
+    /**
+     * Render Mapbox popup.
+     * Enforces only 1 popup is shown at a time.
+     * 
+     * @param {[number, number]]} coordinates
+     * @param {string} title 
+     */
     showPopup(coordinates, title) {
         if (this.popup) {
             this.popup.remove();
@@ -227,14 +293,26 @@ class Map extends Component {
         this.popup.addTo(this.map);
     }
 
+    /**
+     * Handle mouse enter event styles.
+     */
     handleMouseEnter() {
         this.map.getCanvas().style.cursor = 'pointer';
     }
 
+    /**
+     * Handle mouse leave event styles.
+     */
     handleMouseLeave() {
         this.map.getCanvas().style.cursor = '';
     }
 
+    /**
+     * Toggle layer event listeners.
+     * 
+     * @param {string} layerOn 
+     * @param {string} layerOff 
+     */
     addCursorListeners(layerOn, layerOff) {
         if (layerOff) {
             this.map.off('mouseenter', layerOff, this.handleMouseEnter);
@@ -245,6 +323,11 @@ class Map extends Component {
         this.map.on('mouseleave', layerOn, this.handleMouseLeave);
     }
 
+    /**
+     * Render Map component
+     * 
+     * @returns {JSX}
+     */
     render() {
         const { handleMonthChange, isLoading, month, isSupported, isError, handleFullscreen } = this.props;
 

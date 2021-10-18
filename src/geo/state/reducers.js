@@ -12,6 +12,13 @@ const defaultState = {
     mapboxData: {}
 };
 
+/**
+ * Redux reducer for Geo state
+ * 
+ * @param {Object} state 
+ * @param {{type: string}} action 
+ * @returns {Object} nextState
+ */
 const geoReducer = (state = defaultState, action) => {
     const nextState = {...state};
     switch(action.type) {
